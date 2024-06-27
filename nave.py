@@ -7,9 +7,9 @@ class Nave():
         self.pantalla = pantalla
 
         #carga la imagen de la nave y obtiene su rect
-        self.imagen = pygame.image.load("img/space-ship.png")
+        self.imagen = pygame.image.load("img/nave.png")
         self.rect = self.imagen.get_rect()
-        self.pantalla_rec = pantalla.get_rect()
+        self.pantalla_rect = pantalla.get_rect()
 
         #eempieza cad nueva nave en la parte infierior central de la pantalla
         self.rect.centerx = self.pantalla_rect.centerx
