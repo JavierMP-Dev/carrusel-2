@@ -26,8 +26,8 @@ def run_game():
         fj.verificar_eventos(ai_configuraciones,pantalla, nave, balas) #se llama a la funcion verificar que esta en funciones_juego 
         nave.update() #se llama a la funcion update que esta en la clase nave
         #funcion actualizar balas
-        fj.update_bala(balas)
-        fj.update_aliens(aliens)
+        fj.update_balas(aliens, balas)
+        fj.update_aliens(ai_configuraciones,aliens)
         #funcion llamada desde otro script
         fj.actualizar_pantalla(ai_configuraciones, pantalla, nave, aliens, balas)
 

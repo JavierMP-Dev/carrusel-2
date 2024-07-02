@@ -46,14 +46,18 @@ def actualizar_pantalla(ai_configuraciones, pantalla, nave, aliens, balas):
     #hacer visible la pntalla dibujada mas reciente
     pygame.display.flip()
 
-def update_bala(balas):
+def update_balas(aliens, balas):
     #actualiza la poscion de las balas y elimina las antiguas
     #Actualiza las posciiones de las balas
     balas.update()
+
     #deshace las balas que han desaparecido
     for bala in balas.copy():
         if bala.rect.bottom <= 0:
             balas.remove(bala)    
+    #comprueba si hay balas que hayan alcanzado a loa alienigenas
+    #si es hace entonces desaparece la bala y el alien
+    collisions = pygame.sprite.groupcollide(balas, aliens, True, True)
 
 def fuego_bala(ai_configuraciones, pantalla, nave, balas):
     #dispara bala si aun no alcanza el limite
@@ -98,6 +102,20 @@ def crear_flota(ai_configuraciones, pantalla,nave, aliens):
         for alien_number in range(number_aliens_x):
             crear_alien(ai_configuraciones, pantalla, aliens, alien_number, row_number)
 
-def update_aliens(aliens):
-    #actualiza la posicion de todos los alienigenas
+def check_fleet_edges(ai_configuraciones, aliens):
+    #reacciona si un alien llega a la orilla
+    for alien in aliens.sprites():
+        if alien.check_edges():
+            change_fleet_direction(ai_configuraciones, aliens)
+            break
+
+def change_fleet_direction(ai_configuraciones,aliens):
+    #deciende la flota y cambia su direccion
+    for alien in aliens.sprites():
+        alien.rect.y += ai_configuraciones.fleet_drop_speed
+        ai_configuraciones.fleet_direction *= -1
+
+def update_aliens(ai_configuraciones, aliens):
+    #comprueba si la flota esta al borde y luego actualiza las posiciones  de todos los alienigenas
+    check_fleet_edges(ai_configuraciones,aliens)
     aliens.update()

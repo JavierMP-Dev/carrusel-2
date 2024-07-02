@@ -20,4 +20,6 @@ class Configuraciones():
 
         #condiguraciones de alien
         self.alien_speed_factor = 1
-        
+        self.fleet_drop_speed = 10
+        #fleet_direccion, si es 1 representa a la derecha; si es -1 representa a la izquierda
+        self.fleet_direction = 1
