@@ -38,3 +38,6 @@ class Nave():
         #dibuja la nave en su posicion actual
         self.pantalla.blit(self.imagen, self.rect)
         
+    def centrar_nave(self):
+        """centra la nave en la pantalla"""
+        self.center = self.pantalla_rect.centerx

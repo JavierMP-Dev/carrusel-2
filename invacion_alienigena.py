@@ -2,6 +2,7 @@ import pygame
 
 from pygame.sprite import Group
 from configuraciones import Configuraciones
+from estadisticas import Estadisticas
 from nave import Nave
 import funciones_juego as fj
 
@@ -11,6 +12,9 @@ def run_game():
     ai_configuraciones = Configuraciones()
     pantalla = pygame.display.set_mode((ai_configuraciones.screen_width, ai_configuraciones.screen_height))
     pygame.display.set_caption("Invacion alienigena")
+
+    #crea una instancia para almacernar estadisticas de juego
+    estadisticas = Estadisticas(ai_configuraciones)
 
     #crea una nave, un grupo de balas y un grupo de aliens
     nave = Nave(ai_configuraciones, pantalla)
@@ -24,11 +28,12 @@ def run_game():
     while True: 
         #escuchar eventos de teclado o raton
         fj.verificar_eventos(ai_configuraciones,pantalla, nave, balas) #se llama a la funcion verificar que esta en funciones_juego 
-        nave.update() #se llama a la funcion update que esta en la clase nave
-        #funcion actualizar balas
-        fj.update_balas(aliens, balas)
-        fj.update_aliens(ai_configuraciones,aliens)
-        #funcion llamada desde otro script
+        if estadisticas.game_active:
+            nave.update() #se llama a la funcion update que esta en la clase nave
+            #funcion actualizar balas
+            fj.update_balas(ai_configuraciones,pantalla, nave, aliens, balas)
+            fj.update_aliens(ai_configuraciones,estadisticas,pantalla, aliens,nave,balas)
+            
         fj.actualizar_pantalla(ai_configuraciones, pantalla, nave, aliens, balas)
 
 run_game()
