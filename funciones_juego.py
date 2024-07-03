@@ -3,6 +3,7 @@ import pygame
 from bala import Bala 
 from alien import Alien
 from time import sleep
+from estadisticas import Estadisticas
 
 def verificar_eventos_keydown(event,ai_configuraciones, pantalla, nave, balas):
     #responde a las pulsaciones de teclas
@@ -22,7 +23,7 @@ def verificar_eventos_keyup(event, nave):
     elif event.key == pygame.K_LEFT:
         nave.moving_left = False
 
-def verificar_eventos(ai_configuraciones,pantalla, nave, balas):
+def verificar_eventos(ai_configuraciones,pantalla,estadisticas, play_button, nave, balas):
     #responde a las pulsaciones y teclas y los eventos del raton
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -32,9 +33,16 @@ def verificar_eventos(ai_configuraciones,pantalla, nave, balas):
             verificar_eventos_keydown(event,ai_configuraciones,pantalla, nave, balas)       
         elif event.type == pygame.KEYUP:
             verificar_eventos_keyup(event, nave)
-        
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(estadisticas,play_button,mouse_x,mouse_y)
 
-def actualizar_pantalla(ai_configuraciones, pantalla, nave, aliens, balas):
+def check_play_button(ai_configuraciones, pantalla estadisticas,play_button,aliens, balas, mouse_x,mouse_y):
+    """comienza un nuevo juego cuando se pulsa play"""
+    if play_button.rect.collidepoint(mouse_x, mouse_y):
+        estadisticas.game_active = True 
+
+def actualizar_pantalla(ai_configuraciones, pantalla, nave, aliens, balas, play_button):
     #actualiza las imagenes en la pantalla y pasa a la nueva pantalla
     # Volver a dibujar la pantalla durante cada pasada por el bucle while
     pantalla.fill(ai_configuraciones.bg_color)
@@ -44,6 +52,11 @@ def actualizar_pantalla(ai_configuraciones, pantalla, nave, aliens, balas):
     nave.blitme()
     aliens.draw(pantalla)
     
+    #dibuja el boton de play si el juego esta inactivo
+    if not estadisticas.game_active:
+        play_button.draw_button()
+
+        
     #hacer visible la pntalla dibujada mas reciente
     pygame.display.flip()
 
